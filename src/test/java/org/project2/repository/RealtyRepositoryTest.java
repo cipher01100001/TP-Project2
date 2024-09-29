@@ -1,6 +1,9 @@
 package org.project2.repository;
 
+import org.project2.Realty;
 import org.project2.repository.impl.RealtyRepositoryFileBased;
+
+import java.time.LocalDateTime;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -13,6 +16,20 @@ class RealtyRepositoryTest {
         var realties = realtyRepository.findByAddress("Cr 23 #45-67");
         assertNotNull(realties);
         assertFalse(realties.isEmpty());
+    }
+
+    @org.junit.jupiter.api.Test
+    void when_realty_is_added_retunerd_succesfully() {
+        Realty newRealty = new Realty(
+                690000D,
+                95D,
+                "Cl 32 #50-22",
+                LocalDateTime.now(),
+                "Available",
+                5
+        );
+        var realtyAdded = realtyRepository.addRealty(newRealty);
+        assertTrue(realtyAdded);
     }
 
 }

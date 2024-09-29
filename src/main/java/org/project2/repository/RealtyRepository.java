@@ -11,4 +11,6 @@ public interface RealtyRepository {
     List<Realty> findByAddress(String address) throws RealtyAddressNotFoundException;
     List<Realty> findByStratum(int stratum) throws RealtyStratumNotFoundException;
     List<Realty> findByRealtyStatus(String realtyStatus) throws RealtyStatusNotFoundException;
+
+    boolean addRealty(Realty newRealty);
 }
