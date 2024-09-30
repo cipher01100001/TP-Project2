@@ -1,5 +1,7 @@
     package org.project2.repository.impl;
 
+    import org.project2.Apartment;
+    import org.project2.House;
     import org.project2.Realty;
     import org.project2.exceptions.RealtyAddressNotFoundException;
     import org.project2.exceptions.RealtyStatusNotFoundException;
@@ -44,14 +46,25 @@
 
         private Realty build(String text){
             String[] realtyArray = text.split( "," );
-            return new Realty(
-                    Double.parseDouble(realtyArray[0].trim()),
-                    Double.parseDouble(realtyArray[1].trim()),
-                    realtyArray[2].trim(),
-                    LocalDateTime.parse(realtyArray[3].trim()),
-                    realtyArray[4].trim(),
-                    Integer.parseInt(realtyArray[5].trim())
-            );
+
+            double realtyPrice = Double.parseDouble(realtyArray[0].trim());
+            double realEstateArea = Double.parseDouble(realtyArray[1].trim());
+            String address = realtyArray[2].trim();
+            LocalDateTime constructionDate = LocalDateTime.parse(realtyArray[3].trim());
+            String status = realtyArray[4].trim();
+            int stratum = Integer.parseInt(realtyArray[5].trim());
+
+            String typeRealty = realtyArray[6].trim();
+
+            if (typeRealty.equalsIgnoreCase("House")) {
+                int numberOfFloors = Integer.parseInt(realtyArray[7].trim());
+                return new House(realtyPrice, realEstateArea, address, constructionDate, status, stratum, typeRealty, numberOfFloors);
+            } else if (typeRealty.equalsIgnoreCase("Apartment")) {
+                int floorNumber = Integer.parseInt(realtyArray[7].trim());
+                return new Apartment(realtyPrice, realEstateArea, address, constructionDate, status, stratum, typeRealty, floorNumber);
+            } else {
+                throw new IllegalArgumentException("Unknown realty type: " + typeRealty);
+            }
         }
 
         @Override
@@ -61,28 +74,34 @@
                 throw new IllegalArgumentException("Realty cannot be null.");
             }
 
-            String address = newRealty.address();
+            String address = newRealty.getAddress();
             if (address == null || address.isEmpty()) {
                 logger.warning("Invalid address provided for realty: " + newRealty);
                 throw new IllegalArgumentException("Realty must have a valid, non-empty address.");
             }
 
-            double price = newRealty.realtyPrice();
+            double price = newRealty.getRealtyPrice();
             if (price <= 0) {
                 logger.warning("Invalid price provided for realty: " + newRealty);
                 throw new IllegalArgumentException("Realty must have a positive price.");
             }
 
-            double area = newRealty.realEstateArea();
+            double area = newRealty.getRealEstateArea();
             if (area <= 0) {
                 logger.warning("Invalid area provided for realty: " + newRealty);
                 throw new IllegalArgumentException("Realty must have a positive area.");
             }
 
-            int stratum = newRealty.stratum();
+            int stratum = newRealty.getStratum();
             if (stratum <= 0) {
                 logger.warning("Invalid stratum provided for realty: " + newRealty);
                 throw new IllegalArgumentException("Realty must have a positive stratum.");
+            }
+
+            String typeRealty = newRealty.getTypeRealty();
+            if (!typeRealty.equalsIgnoreCase("House") && !typeRealty.equalsIgnoreCase("Apartment")) {
+                logger.warning("Invalid typeRealty provided for realty: " + newRealty);
+                throw new IllegalArgumentException("Realty must be of type 'House' or 'Apartment'.");
             }
 
             realties.add(newRealty);
@@ -95,7 +114,7 @@
             List<Realty> matchingRealties = new ArrayList<>();
 
             for (Realty realty : realties) {
-                if (realty.address().equalsIgnoreCase(address)) {
+                if (realty.getAddress().equalsIgnoreCase(address)) {
                     matchingRealties.add(realty);
                 }
             }
