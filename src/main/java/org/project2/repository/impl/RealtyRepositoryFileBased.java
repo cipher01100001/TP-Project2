@@ -107,7 +107,6 @@
             }
 
             realties.add(newRealty);
-            // Guardar el nuevo objeto en el archivo
             try {
                 saveRealtiesToFile("./data/realtiescopy.txt");
             } catch (IOException e) {
@@ -121,7 +120,7 @@
             try (BufferedWriter writer = new BufferedWriter(new FileWriter(filePath))) {
                 for (Realty realty : realties) {
                     writer.write(formatRealtyToText(realty));
-                    writer.newLine(); // Escribir una nueva línea después de cada objeto
+                    writer.newLine();
                 }
                 logger.info("Realties successfully saved to file: " + filePath);
             } catch (IOException e) {
@@ -141,7 +140,6 @@
                     .append(realty.getStratum()).append(", ")
                     .append(realty.getTypeRealty());
 
-            // Agregar el atributo adicional dependiendo del tipo de Realty (House o Apartment)
             if (realty instanceof House) {
                 sb.append(", ").append(((House) realty).getNumberOfFloors());
             } else if (realty instanceof Apartment) {

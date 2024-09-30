@@ -13,7 +13,7 @@ public class ApplicationRunner {
 
     public static void main(String[] args) {
         RealtyRepositoryFileBased repository = new RealtyRepositoryFileBased();
-        String filePaths = "./data/realtiescopy.txt"; // Archivo donde se guardará la información
+        String filePaths = "./data/realtiescopy.txt";
 
         try {
             repository.saveRealtiesToFile(filePaths);

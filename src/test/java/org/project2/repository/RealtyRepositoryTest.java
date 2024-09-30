@@ -36,11 +36,9 @@ class RealtyRepositoryTest {
         );
         var realtyAdded = realtyRepository.addRealty(newRealty);
         assertTrue(realtyAdded);
-        // Verificar que el nuevo objeto se guardó en el archivo
         Path filePath = Paths.get("./data/realtiescopy.txt");
         assertTrue(Files.exists(filePath), "El archivo debería existir.");
         try {
-            // Leer el contenido del archivo y verificar si contiene el nuevo realty
             String content = Files.readString(filePath);
             assertTrue(content.contains("Cl 32 #50-22"), "El archivo debería contener la dirección del nuevo realty.");
         } catch (IOException e) {
@@ -61,22 +59,17 @@ class RealtyRepositoryTest {
         assertFalse(realties.isEmpty());
     }
 
-    // Nuevo test: Verificar si se guardan las realties en el archivo "realtiescopy.txt"
     @org.junit.jupiter.api.Test
     void testSaveRealtiesToFile() {
-        String filePaths = "./data/realtiescopy.txt"; // Ruta del archivo
+        String filePaths = "./data/realtiescopy.txt"; 
 
         try {
-            // Ejecutar el método que guarda las realties en el archivo
             ((RealtyRepositoryFileBased) realtyRepository).saveRealtiesToFile(filePaths);
-
-            // Verificar si el archivo fue creado exitosamente
             Path path = Paths.get(filePaths);
             assertTrue(Files.exists(path), "El archivo debería haberse creado exitosamente.");
             System.out.println("El archivo se ha creado correctamente en: " + filePaths);
 
         } catch (IOException e) {
-            // En caso de error, imprimir el mensaje de excepción
             fail("Error al guardar realties en el archivo: " + e.getMessage());
         }
     }
