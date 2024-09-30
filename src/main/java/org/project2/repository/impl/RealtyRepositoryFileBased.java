@@ -8,6 +8,8 @@
     import org.project2.exceptions.RealtyStratumNotFoundException;
     import org.project2.repository.RealtyRepository;
 
+    import java.io.BufferedWriter;
+    import java.io.FileWriter;
     import java.io.BufferedReader;
     import java.io.IOException;
     import java.nio.file.Files;
@@ -105,8 +107,48 @@
             }
 
             realties.add(newRealty);
+            // Guardar el nuevo objeto en el archivo
+            try {
+                saveRealtiesToFile("./data/realtiescopy.txt");
+            } catch (IOException e) {
+                logger.severe("Error saving new realty to file: " + e.getMessage());
+                return false;
+            }
             logger.info("New realty added successfully: " + newRealty);
             return true;
+        }
+        public void saveRealtiesToFile(String filePath) throws IOException {
+            try (BufferedWriter writer = new BufferedWriter(new FileWriter(filePath))) {
+                for (Realty realty : realties) {
+                    writer.write(formatRealtyToText(realty));
+                    writer.newLine(); // Escribir una nueva línea después de cada objeto
+                }
+                logger.info("Realties successfully saved to file: " + filePath);
+            } catch (IOException e) {
+                logger.severe("Error writing realties to file: " + e.getMessage());
+                throw e;
+            }
+        }
+
+
+        private String formatRealtyToText(Realty realty) {
+            StringBuilder sb = new StringBuilder();
+            sb.append(realty.getRealtyPrice()).append(", ")
+                    .append(realty.getRealEstateArea()).append(", ")
+                    .append(realty.getAddress()).append(", ")
+                    .append(realty.getConstructionDate()).append(", ")
+                    .append(realty.getRealtyStatus()).append(", ")
+                    .append(realty.getStratum()).append(", ")
+                    .append(realty.getTypeRealty());
+
+            // Agregar el atributo adicional dependiendo del tipo de Realty (House o Apartment)
+            if (realty instanceof House) {
+                sb.append(", ").append(((House) realty).getNumberOfFloors());
+            } else if (realty instanceof Apartment) {
+                sb.append(", ").append(((Apartment) realty).getFloorNumber());
+            }
+
+            return sb.toString();
         }
 
         @Override
@@ -128,11 +170,35 @@
 
         @Override
         public List<Realty> findByStratum(int stratum) throws RealtyStratumNotFoundException {
-            return List.of();
+            List<Realty> copyRealties = new ArrayList<>();
+
+            for (Realty realty : realties) {
+                if (realty.getStratum() == stratum) {
+                    copyRealties.add(realty);
+                }
+            }
+
+            if (copyRealties.isEmpty()) {
+                throw new RealtyAddressNotFoundException("No realties found with stratum: " + stratum);
+            }
+
+            return copyRealties;
         }
 
         @Override
         public List<Realty> findByRealtyStatus(String realtyStatus) throws RealtyStatusNotFoundException {
-            return List.of();
+            List<Realty> matchRealties = new ArrayList<>();
+
+            for (Realty realty : realties) {
+                if (realty.getRealtyStatus().equalsIgnoreCase(realtyStatus)) {
+                    matchRealties.add(realty);
+                }
+            }
+
+            if (matchRealties.isEmpty()) {
+                throw new RealtyAddressNotFoundException("No realties found with the condition: " + realtyStatus);
+            }
+
+            return matchRealties;
         }
     }
