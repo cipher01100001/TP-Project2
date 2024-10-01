@@ -10,16 +10,4 @@ public class ApplicationRunner {
     void run() {
         logger.info("The application has been executed successfully.");
     }
-
-    public static void main(String[] args) {
-        RealtyRepositoryFileBased repository = new RealtyRepositoryFileBased();
-        String filePaths = "./data/realtiescopy.txt";
-
-        try {
-            repository.saveRealtiesToFile(filePaths);
-            System.out.println("Realties saved to file: " + filePaths);
-        } catch (IOException e) {
-            System.err.println("Error saving realties to file: " + e.getMessage());
-        }
-    }
 }
