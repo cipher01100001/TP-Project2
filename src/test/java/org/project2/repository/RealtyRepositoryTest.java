@@ -37,12 +37,12 @@ class RealtyRepositoryTest {
         var realtyAdded = realtyRepository.addRealty(newRealty);
         assertTrue(realtyAdded);
         Path filePath = Paths.get("./data/realtiescopy.txt");
-        assertTrue(Files.exists(filePath), "El archivo debería existir.");
+        assertTrue(Files.exists(filePath), "The file should exist.");
         try {
             String content = Files.readString(filePath);
-            assertTrue(content.contains("Cl 32 #50-22"), "El archivo debería contener la dirección del nuevo realty.");
+            assertTrue(content.contains("Cl 32 #50-22"), "The file should contain the new realty's address.");
         } catch (IOException e) {
-            fail("Error al leer el archivo: " + e.getMessage());
+            fail("Error reading the file: " + e.getMessage());
         }
     }
     @org.junit.jupiter.api.Test
@@ -66,11 +66,11 @@ class RealtyRepositoryTest {
         try {
             realtyRepository.saveRealtiesToFile(filePaths);
             Path path = Paths.get(filePaths);
-            assertTrue(Files.exists(path), "El archivo debería haberse creado exitosamente.");
+            assertTrue(Files.exists(path), "The file should have been created successfully.");
             System.out.println("El archivo se ha creado correctamente en: " + filePaths);
 
         } catch (IOException e) {
-            fail("Error al guardar realties en el archivo: " + e.getMessage());
+            fail("Error saving realties to the file: " + e.getMessage());
         }
     }
 }
