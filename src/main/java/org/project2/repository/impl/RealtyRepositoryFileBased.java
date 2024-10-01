@@ -1,8 +1,8 @@
     package org.project2.repository.impl;
 
-    import org.project2.Apartment;
-    import org.project2.House;
-    import org.project2.Realty;
+    import org.project2.model.Apartment;
+    import org.project2.model.House;
+    import org.project2.model.Realty;
     import org.project2.exceptions.RealtyAddressNotFoundException;
     import org.project2.exceptions.RealtyStatusNotFoundException;
     import org.project2.exceptions.RealtyStratumNotFoundException;

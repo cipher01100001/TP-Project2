@@ -1,6 +1,6 @@
 package org.project2.repository;
 
-import org.project2.Apartment;
+import org.project2.model.Apartment;
 import org.project2.repository.impl.RealtyRepositoryFileBased;
 
 import java.io.IOException;
@@ -64,7 +64,7 @@ class RealtyRepositoryTest {
         String filePaths = "./data/realtiescopy.txt"; 
 
         try {
-            ((RealtyRepositoryFileBased) realtyRepository).saveRealtiesToFile(filePaths);
+            realtyRepository.saveRealtiesToFile(filePaths);
             Path path = Paths.get(filePaths);
             assertTrue(Files.exists(path), "El archivo debería haberse creado exitosamente.");
             System.out.println("El archivo se ha creado correctamente en: " + filePaths);
